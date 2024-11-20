@@ -5,11 +5,6 @@
 #include <chrono>
 #include <fstream>
 
-// Definición de estructura para almacenar los datos de la gráfica
-struct DataPoint {
-    double t;
-    double f_t;
-};
 
 // Función para calcular la constante e usando una serie de Taylor
 double calcularEuler(int terminos) {
@@ -22,6 +17,7 @@ double calcularEuler(int terminos) {
     return e;
 }
 
+
 int main() {
     // Iniciar el temporizador
     auto start_time = std::chrono::high_resolution_clock::now();
@@ -31,7 +27,7 @@ int main() {
     const double k = 1.38e-23;  // Constante de Boltzmann
     const double v = 3.25e14;   // Frecuencia
     const double c = 3.1e8;     // Velocidad de la luz
-    const double v3 = 34.328125e42; // Asegúrate de que este valor sea correcto
+    const double v3 = 34.328125e42; // V^3 Constante
 
     // Calcular constantes
     double c2 = c * c;
@@ -41,33 +37,43 @@ int main() {
     // Calcular e (número de Euler)
     double e = calcularEuler(100); // Usar 100 términos para una buena aproximación
 
-    // Limitar el rango de t
+    // Limitar el Dominio de t
     int rangeX[2] = {-10000, 10000};
+    
+    // Archivo ---------
+    std::ofstream file("grafica.csv"); // abrir 
+    
+     //Catch error
+    if (!file.is_open()) {
+        std::cerr << "Error al abrir el archivo para escribir.\n";
+        return 1;
+    }
 
-    // Crear un vector para almacenar los datos
-    std::vector<DataPoint> grafica;
-
+    // registrar constantes....
+    file << "Constantes:\n - h : " << h << "\n - v : " << v << "\n - c : " << c << "\n - k : " << k << "\n - v3 : " << v3 << "\n - c2 : " << c2  << "\n - (hv^3/c^2) : " << constantes  << "\n - (hv/k: " << exponente;
+    file << "\n - Inicia en: " << rangeX[0] << ", termina en: " << rangeX[1];
+    file << "\n\ntabla \n\nt,expresion variable exp(hv/kt),f(t)\n";
+    
+    // iteración para calcular
     for (int i = rangeX[0]; i <= rangeX[1]; ++i) {
         double t = static_cast<double>(i);
+        
+        file << t << ",";// almacenó el valor de t
         if (t != 0) { // Evitar división por cero
             try {
-                double exponente_t = exponente / t;
-                std::cout << "\tEl valor del exponente para t = " << t
-                          << " es: " << exponente_t << "\n"; // Depuración
 
-                // Verificar si el exponente es razonable
-               // if (exponente_t < 10e4) {
-                    // Calcular el valor de y
-                    double y = constantes / (std::pow(e, exponente_t) - 1.0);
-                    grafica.push_back({t, y});
-                //} else {
-                //    std::cout << "Exponente demasiado grande para t=" << t
-               //               << ", se omite este valor.\n";
-              //  }
+                // cálculos 
+                double exponente_t = exponente / t;
+                double expo_F = std::pow(e, exponente_t);
+                double y = constantes / ( expo_F- 1.0);
+                file << expo_F << "," << y << "\n"; // almacenamiento del valor para cada t
             } catch (const std::exception &e) {
-                std::cout << "Error en t=" << t << ": " << e.what() << "\n";
+                file << ",,Error : " << e.what() << "\n"; // si no de puede operar almacena el error!!
+                std::cout << "Error en t=" << t << ": " << e.what() << "\n"; 
             }
+        
         } else {
+            file << "indeterminado,indeterminado"; // catch error division por 0
             std::cout << "t es cero, se omite este valor.\n";
         }
     }
@@ -79,22 +85,8 @@ int main() {
     // Mostrar el tiempo total de ejecución
     std::cout << "Tiempo total de ejecución: " << elapsed_time.count() << " segundos\n";
 
-    // Guardar los datos en un archivo CSV
-    if (grafica.empty()) {
-        std::cerr << "!!!!!ERROR: El vector de datos no posee elementos...\n";
-        return 1;
-    }
-
-    std::ofstream file("grafica.csv");
-    if (!file.is_open()) {
-        std::cerr << "Error al abrir el archivo para escribir.\n";
-        return 1;
-    }
-
-    file << "t,f(t)\n";
-    for (const auto &point : grafica) {
-        file << point.t << "," << point.f_t << "\n";
-    }
+    file << "\n\n --- Tiempo de ejecución: " << elapsed_time.count(); // almacena tiempo de ejecución 
+    
     file.close();
 
     std::cout << "Los datos se han guardado en grafica.csv\n";
