@@ -38,7 +38,7 @@ int main() {
     double e = calcularEuler(100); // Usar 100 términos para una buena aproximación
 
     // Limitar el Dominio de t
-    double rangeX[2] = {1e15,1e15+1e3};
+    double rangeX[2] = {0,1};
 
     if ( rangeX[0] > rangeX[1] ) {
       std::cout << "\n Error: En el dominio de la función, se puso un valor mayor en minimo";
@@ -48,7 +48,7 @@ int main() {
       
     }
     // Archivo ---------
-    std::ofstream file("grafica.csv"); // abrir 
+    std::ofstream file("/out/grafica.csv"); // abrir 
 
      //Catch error
     if (!file.is_open()) {
@@ -63,7 +63,7 @@ int main() {
     file << "\n\ntabla \n\nt,expresion variable exp(hv/kt),f(t)\n";
     std::cout << "\n se creo el archivo y se empezó a iterar";
     // iteración para calcular
-    for (double i = rangeX[0]; i <= rangeX[1]; ++i) {
+    for (double i = rangeX[1]; i > rangeX[0]; i /= 10 ) {
         double t = static_cast<double>(i);
 
         file << t << ",";// almacenó el valor de t
@@ -72,18 +72,18 @@ int main() {
 
                 // cálculos 
                 double exponente_t = exponente / t;
-                if ( i == rangeX[1] ) std::cout << std::endl << exponente_t;
                 double expo_F = std::pow(e, exponente_t);
                 double y = constantes / ( expo_F- 1.0);
-                file << expo_F << "," << y << "\n"; // almacenamiento del valor para cada t
+                file << std::setw(29) << expo_F << "," << y << "\n"; // almacenamiento del valor para cada t
+                // if ( !( i % 10000 ) ) 
+                 std::cout << "- Para t = " << std::setw(16) << t << ", el exponente es: " << std::setw(16) << exponente_t <<" f(t) = " << std::setw(10) << y << std::endl;
             } catch (const std::exception &e) {
-                file << ",,Error : " << e.what() << "\n"; // si no de puede operar almacena el error!!
+                file << "Error : " << "," << e.what() << "\n"; // si no de puede operar almacena el error!!
                 std::cout << "Error en t=" << t << ": " << e.what() << "\n"; 
             }
-
         } else {
             file << "indeterminado,indeterminado"; // catch error division por 0
-            std::cout << "\n !!!!Excepcion: t es cero, se omite este valor.\n";
+            std::cout << "\n !!!!Excepcion: t " << t << " es cero, se omite este valor.\n";
         }
     }
 
@@ -100,5 +100,6 @@ int main() {
 
     std::cout << "Los datos se han guardado en grafica.csv\n";
 
+    system("PAUSE");
     return 0;
 }
