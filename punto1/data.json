@@ -1,0 +1,19 @@
+{
+  "funciones": {
+    "B(t,v)": "( hv^3 / c^2 ) * ( exp( ( hv ) / ( kt ) ) - 1  )^-1"
+   ,"f(v)": "( hv^3 / c^2 ) * ( exp( ( hv ) / ( kt ) ) - 1  )^-1"
+   ,"f(t)": "( hv^3 / c^2 ) * ( exp( ( hv ) / ( kt ) ) - 1  )^-1"
+  }
+ ,"constantes": {
+    "h": "6.626e-34"
+   ,"c": "3.1e8"
+   ,"k": "1.18e-23"
+   ,"t": "35e13"
+  }
+ ,"dataInit": {
+    "init": -100
+   ,"end": 100
+   ,"nIterations": 20000
+   ,"step": 1
+ }
+}
