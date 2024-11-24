@@ -11,7 +11,7 @@ class Row:
   self.sexo = sexo
   self.casos = Decimal(casos)  # Convertir a entero
   self.muertes = int(muertes) if muertes else 0 # Convertir a entero
-
+  
 def derivadaAdelanto( i , iF , fo , fi , h ):
  if ( not i ):
   return ( fi - fo ) / h;
