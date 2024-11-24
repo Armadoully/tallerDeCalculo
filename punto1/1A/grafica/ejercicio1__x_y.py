@@ -37,7 +37,7 @@ def calcular_euler(terminos):
 e = calcular_euler(100)  # Usar 100 términos para una buena aproximación
 
 # Limitar el rango de t
-rangeX = [ 1 , 10 ]  # Cambia el rango según sea necesario
+rangeX = [ 0 , 10 ]  # Cambia el rango según sea necesario
 
 for i in range(rangeX[0], rangeX[1] + 1):
     t = Decimal(i)
