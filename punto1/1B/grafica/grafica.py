@@ -31,8 +31,8 @@ def calcular_euler(terminos):
 e = calcular_euler(100)  # Usar 100 términos para una buena aproximación
 
 # Limitar el rango de t
-rangeX = [0, 10000000000000000]  # Cambia el rango según sea necesario
-nIteraciones = 100000  # Cambiado a 100 para obtener 100 datos
+rangeX = [-100000000000000000, 0]  # Cambia el rango según sea necesario
+nIteraciones = 100000 # Cambiado a 100 para obtener 100 datos
 step = (rangeX[1] - rangeX[0]) / nIteraciones
 
 # Abrir un archivo CSV para escribir los resultados
@@ -84,5 +84,5 @@ plt.ylabel('f(v)')
 plt.title('Gráfica de f(v) vs v')
 plt.legend()
 plt.grid()
-plt.savefig('outPy/grafica.png')  # Guardar la gráfica como PNG
+plt.savefig(f'outPy/grafica_rango({rangeX[0],rangeX[1]}_iteraciones{nIteraciones}).png')  # Guardar la gráfica como PNG
 plt.show()  # Mostrar la gráfica
