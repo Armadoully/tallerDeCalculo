@@ -53,7 +53,7 @@ with open(filename, mode='w', newline='', encoding='utf-8') as file:
         # Calcular la segunda derivada
         fraccionSinb = uALaV / (uALaV - 1)
         parte1Derivada2 = b * fraccionSinb
-        parte2Derivada2 = 1 + v * b * fraccionSinb
+        parte2Derivada2 = 1 + (v * b * fraccionSinb)
         derivada2 = parte1Derivada2 * parte2Derivada2
         
         # Actualizar v usando el método de Newton-Raphson
